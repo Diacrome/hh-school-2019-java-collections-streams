@@ -51,14 +51,7 @@ public class Task8 implements Task {
 
   // есть ли совпадающие в двух коллекциях персоны?
   public boolean hasSamePersons(Collection<Person> persons1, Collection<Person> persons2) {
-    for (Person person1 : persons1) {
-      for (Person person2 : persons2) {
-        if (person1.equals(person2)) {
-          return true; //дальше по циклам идти не надо, результат есть
-        }
-      }
-    }
-    return false;
+    return persons1.stream().anyMatch(persons2::contains);
   }
 
   //Выглядит вроде неплохо...

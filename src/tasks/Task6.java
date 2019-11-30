@@ -6,6 +6,7 @@ import common.Task;
 
 import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /*
 Имеются
@@ -19,12 +20,12 @@ public class Task6 implements Task {
   private Set<String> getPersonDescriptions(Collection<Person> persons,
                                             Map<Integer, Set<Integer>> personAreaIds,
                                             Collection<Area> areas) {
-    Set<String> result = new HashSet<>();
-    Map<Integer, String> areaName = new HashMap<>();
-    areas.forEach(area -> areaName.put(area.getId(), area.getName()));
-    persons.forEach(person -> personAreaIds.get(person.getId())
-            .forEach(areaId -> result.add(person.getFirstName() + " - " + areaName.get(areaId))));
-    return result;
+    Map<Integer, String> areaName = areas.stream().collect(Collectors.toMap(Area::getId, Area::getName));
+    return persons.stream()
+            .filter(person -> personAreaIds.containsKey(person.getId()))
+            .flatMap(person -> personAreaIds.get(person.getId()).stream()
+                    .map(id -> person.getFirstName() + " - " + areaName.get(id)))
+            .collect(Collectors.toSet());
   }
 
   @Override
