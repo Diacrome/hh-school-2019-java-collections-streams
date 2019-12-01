@@ -21,10 +21,7 @@ public class Task8 implements Task {
   private long count;
 
   //Не хотим выдывать апи нашу фальшивую персону, поэтому конвертим начиная со второй
-  public List<String> getNames(List<Person> persons) {
-    if (persons.size() == 0) {
-      return Collections.emptyList();
-    } //лишний раз менять коллекцию не надо, есть skip
+  public List<String> getNames(List<Person> persons) { //лишний раз менять коллекцию не надо, есть skip
     return persons.stream().map(Person::getFirstName).skip(1).collect(Collectors.toList());
   }
 
@@ -54,8 +51,8 @@ public class Task8 implements Task {
     return persons1.stream().anyMatch(persons2::contains);
   }
 
-  //Выглядит вроде неплохо...
-  public long countEven(Stream<Integer> numbers) {
+  //Выглядит вроде неплохо... ! использование не final переменных может создать проблему в стримах при многопоточности
+  public long countEven(Stream<Integer> numbers) { //разные стримы будут менять одну и ту же переменную и будет каша
     return numbers.map(num -> num % 2 == 0).count(); //есть count
   }
 
